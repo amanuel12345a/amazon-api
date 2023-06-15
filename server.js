@@ -145,8 +145,8 @@ app.post("/", async (req, res) => {
             quantity: item.quantity,
           }
         }),
-        success_url: `http://localhost:3000/`,
-        cancel_url: `http://localhost:3000/`,
+        success_url: `https://amanuel-amazon.netlify.app/`,
+        cancel_url: `https://amanuel-amazon.netlify.app/`,
       })
       res.json({ url: session.url })
     } catch (e) {
