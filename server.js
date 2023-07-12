@@ -133,7 +133,6 @@ app.post("/", async (req, res) => {
         mode: "payment",
         line_items: req.body.products.map(item => {
           const storeItem = storeItems.get(item.id)
-          console.log(storeItem)
           return {
             price_data: {
               currency: "usd",
@@ -145,10 +144,10 @@ app.post("/", async (req, res) => {
             quantity: item.quantity,
           }
         }),
-        success_url: `https://amanuel-amazon.netlify.app/`,
-        cancel_url: `https://amanuel-amazon.netlify.app/`,
+        success_url: `https://amazon1-roan.vercel.app/`,
+        cancel_url: `https://amazon1-roan.vercel.app/`,
       })
-      res.json({ url: session.url })
+      res.json({ url: session.url, products: req.body.products})
     } catch (e) {
       res.status(500).json({ error: e.message })
     }
