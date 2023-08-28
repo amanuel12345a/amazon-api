@@ -199,7 +199,7 @@ app.post("/", async (req, res) => {
           }
         }),
         customer: customer.id,
-        success_url: `http://localhost:3000/order`,
+        success_url: `https://amazon1-roan.vercel.app/order`,
         cancel_url: `https://amazon1-roan.vercel.app/`,
       })
       res.json({ url: session.url, products: req.body.products})
