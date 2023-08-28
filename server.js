@@ -157,18 +157,22 @@ mongoose
 app.post("/", async (req, res) => {
   // console.log(req.body)
   const products = req.body.products 
-  const product = products.map((product)=>{
-    // console.log(product)
-    return {
-      quantity:product.quantity,
-      image:product.image,
-      title:product.title,
-      price:product.price,
-      category:product.category,
-      description:product.description,
-      productId: product.id
-    }
-  })
+  let product;
+  if(products){
+    product = products.map((product)=>{
+      // console.log(product)
+      return {
+        quantity:product.quantity,
+        image:product.image,
+        title:product.title,
+        price:product.price,
+        category:product.category,
+        description:product.description,
+        productId: product.id
+      }
+    })
+  }
+
   // console.log(product)
   const newpending = new Pending({userId: req.body.email,products:product})
 
