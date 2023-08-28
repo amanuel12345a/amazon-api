@@ -1,5 +1,9 @@
 const express = require('express')
 const router = express.Router()
+const mongoose = require("mongoose");
+const stripe = require("stripe")(`${process.env.API_KEY}`);
+const { Order } = require("../models/order");
+const { Pending } = require("../models/pending");
 router.post(
     "/webhook",
     express.json({ type: "application/json" }),
@@ -49,7 +53,6 @@ router.post(
               const pending = await Pending.find({ _id: parsedCustomerId });
               // console.log(pending)
               const {userId,products} = pending[0]
-              if(products){
                 const product = products.map((product)=>{
                     // console.log(product)
                     return {
@@ -62,7 +65,6 @@ router.post(
                       productId: product.productId
                     }
                   })
-              }
               console.log(product)
               console.log(pending)
               const amount = data.amount_total
