@@ -158,22 +158,24 @@ app.post("/", async (req, res) => {
   // console.log(req.body)
   const products = await req.body.products 
   let product;
-
-     product = await products.map((product)=>{
-      // console.log(product)
-      return {
-        quantity:product.quantity,
-        image:product.image,
-        title:product.title,
-        price:product.price,
-        category:product.category,
-        description:product.description,
-        productId: product.id
-      }
-    })
-
-  // console.log(product)
-  const newpending = await new Pending({userId: req.body.email,products:product})
+  if (typeof (products) !== 'undefined')
+   {
+    if(products.length > 0)
+    {
+      product = await products.map((product)=>{
+        // console.log(product)
+        return {
+          quantity:product.quantity,
+          image:product.image,
+          title:product.title,
+          price:product.price,
+          category:product.category,
+          description:product.description,
+          productId: product.id
+        }
+      })
+    }
+    const newpending = await new Pending({userId: req.body.email,products:product})
 
   // console.log(newpending._id)
   const id = newpending._id
@@ -205,10 +207,15 @@ app.post("/", async (req, res) => {
         success_url: `https://amanuelproject.vercel.app/order`,
         cancel_url: `https://amanuelproject.vercel.app/`,
       })
-      res.json({ url: session.url, products: req.body.products})
+      return res.json({ url: session.url, products: req.body.products})
     } catch (e) {
-      res.status(500).json({ error: e.message })
+      return res.status(500).json({ error: e.message })
     }
+   }
+     res.send('no items')
+
+  // console.log(product)
+  
   })
   
   app.listen(PORT,()=>{
