@@ -175,6 +175,7 @@ app.post("/", async (req, res) => {
         }
       })
     }
+    console.log(product, req.body.email)
     const newpending = await new Pending({userId: req.body.email,products:product})
 
   // console.log(newpending._id)
