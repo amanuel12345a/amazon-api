@@ -144,22 +144,22 @@ app.post("/order", async (req, res) => {
 app.use('/',webhookrouter.router)
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "whsec_858e181bf262b217912cf02ea988107da4b478bed86494c67f6131140bd7cb6b";
+const endpointSecret = process.env.ENDPOINTSECRET;
 
 app.use(bodyParser.raw({ type: 'application/json' }));
 
 
 // iWPoLQcHjpr0tIHP
 mongoose
-  .connect('mongodb+srv://amanuel:amanuel@cluster0.yq02jmz.mongodb.net/?retryWrites=true&w=majority', )
+  .connect(process.env.MONGODB )
   .then(() => console.log("MongoDB connection established..."))
   .catch((error) => console.error("MongoDB connection failed:", error.message));
 app.post("/", async (req, res) => {
   // console.log(req.body)
-  const products = req.body.products 
+  const products = await req.body.products 
   let product;
-  if(products){
-    product = products.map((product)=>{
+
+     product = await products.map((product)=>{
       // console.log(product)
       return {
         quantity:product.quantity,
@@ -171,10 +171,9 @@ app.post("/", async (req, res) => {
         productId: product.id
       }
     })
-  }
 
   // console.log(product)
-  const newpending = new Pending({userId: req.body.email,products:product})
+  const newpending = await new Pending({userId: req.body.email,products:product})
 
   // console.log(newpending._id)
   const id = newpending._id
@@ -203,8 +202,8 @@ app.post("/", async (req, res) => {
           }
         }),
         customer: customer.id,
-        success_url: `https://amazon1-roan.vercel.app/order`,
-        cancel_url: `https://amazon1-roan.vercel.app/`,
+        success_url: `https://amanuelproject.vercel.app/order`,
+        cancel_url: `https://amanuelproject.vercel.app/`,
       })
       res.json({ url: session.url, products: req.body.products})
     } catch (e) {
